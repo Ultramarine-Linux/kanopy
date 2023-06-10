@@ -1,8 +1,10 @@
 use clap::{Parser, Subcommand};
 use color_eyre::eyre::Result;
+
+use crate::run::{check_commands, enable_services, init_cluster};
 mod config;
-mod run;
 mod helm;
+mod run;
 
 #[derive(Parser)]
 #[command(version, about)]
@@ -38,6 +40,15 @@ fn main() -> Result<()> {
     color_eyre::install()?;
     println!("Hello, world!");
     let cli = KanopyCli::parse();
-    
+
+    match cli.subcmd {
+        SubCommand::Init => {
+            check_commands()?;
+            enable_services()?;
+            init_cluster()?;
+        }
+        SubCommand::FirstBoot => {}
+    }
+
     Ok(())
 }
