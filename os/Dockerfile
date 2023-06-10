@@ -13,5 +13,3 @@ RUN rpm-ostree install --idempotent --allow-inactive \
     kubernetes-kubeadm
 
 COPY ./assets/ /var/lib/kanopy
-
-RUN ostree container commit
