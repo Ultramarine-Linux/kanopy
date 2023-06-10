@@ -1,0 +1,23 @@
+# Firstboot service for Kanopy
+[Unit]
+Description=Kanopy firstboot setup
+After=network-online.target
+Wants=network-online.target
+Before=systemd-user-sessions.service
+OnFailure=emergency.target
+OnFailureJobMode=replace-irreversibly
+ConditionPathExists=!/var/lib/kanopy/firstboot.done
+
+# This service is run once on first boot to configure the system, then creates a file to prevent it from running again.
+
+[Service]
+RemainAfterExit=yes
+Type=oneshot
+ExecStart=/usr/bin/kanopy firstboot
+ExecStartPost=/bin/touch /var/lib/kanopy/firstboot.done
+StandardOutput=kmsg+console
+StandardError=kmsg+console
+
+[Install]
+WantedBy=multi-user.target
+
