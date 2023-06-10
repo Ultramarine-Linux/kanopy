@@ -2,6 +2,7 @@ use clap::{Parser, Subcommand};
 use color_eyre::eyre::Result;
 mod config;
 mod run;
+mod helm;
 
 #[derive(Parser)]
 #[command(version, about)]
@@ -37,5 +38,6 @@ fn main() -> Result<()> {
     color_eyre::install()?;
     println!("Hello, world!");
     let cli = KanopyCli::parse();
+    
     Ok(())
 }

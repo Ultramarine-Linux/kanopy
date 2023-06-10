@@ -13,6 +13,8 @@ ConditionPathExists=!/var/lib/kanopy/firstboot.done
 [Service]
 RemainAfterExit=yes
 Type=oneshot
+# pre start script to enable cri-o
+ExecStartPre=/usr/bin/systemctl enable --now crio
 ExecStart=/usr/bin/kanopy firstboot
 ExecStartPost=/bin/touch /var/lib/kanopy/firstboot.done
 StandardOutput=kmsg+console

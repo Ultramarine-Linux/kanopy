@@ -6,7 +6,7 @@ hostname: master-1
 cluster:
     # only one master per cluster
     # this would be set for the node you want to set up first, and then the rest of the nodes would join this one
-    master: true 
+    master: true
     # control-plane or worker, adds a role label to the node if control-plane is true
     # you can add additional roles later after the cluster is set up
     role: control-plane
@@ -17,17 +17,16 @@ cluster:
     # if master is false, required to join cluster, if not, you only need to set token
     join:
         endpoint: "https://master-1:6443" # or whatever the master's endpoint is
-        token: "hunter2" # token to join cluster
+        token: abcdef.1234567890abcdef # [6 alphanumeric].[16 alphanumeric]
         ca-cert-hash: "" # hash of the CA cert
 
 # SSH keys should be in ignition config
-
 
 # Networking setup
 networking:
     internal-ip: null # null or "", if you want to automatically get the IP address
     external-ip: null # null or "" if you want to set none
-    cni: calico # or flannel, cilium, canal
+    cni: calico # flannel, cilium, canal, calico
     pod-cidr: 10.42.0.0/16
     service-cidr: # idk
     cni-values:
@@ -57,4 +56,16 @@ storage:
     nfs:
         enabled: false
 
-    # ... or you can set up your own storage later on
+# ... or you can set up your own storage later on
+
+# Helm config
+helm:
+    # extra args for each install
+    extra-install-args: []
+    extra-charts:
+        []
+        # - name: foo
+        #   version: 1.0.0 # optional, or use latest
+        #   repo: https://charts.example.com
+        #   values: # values to pass to the chart
+        #     foo: bar

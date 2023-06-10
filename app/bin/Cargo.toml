@@ -17,3 +17,4 @@ clap = { version = "4.3.3", features = ["env", "derive"] }
 color-eyre = "0.6.2"
 serde = { version = "1.0.164", features = ["serde_derive"] }
 serde_yaml = "0.9.21"
+tempfile = "3.6.0"

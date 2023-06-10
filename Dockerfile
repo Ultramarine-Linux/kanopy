@@ -9,7 +9,10 @@ RUN cargo build --release
 
 FROM ghcr.io/ultramarine-linux/base-ostree:38 as runtime
 
-# OSTree image
+# copy files
+COPY os/override /
+COPY os/assets/ /var/lib/kanopy
+COPY --from=builder /kanopy/target/release/kanopy /usr/bin/kanopy
 
 # Install packages
 
@@ -20,8 +23,8 @@ RUN rpm-ostree install --idempotent --allow-inactive \
     cri-o \
     runc \
     kubernetes-client \
-    kubernetes-kubeadm
+    kubernetes-kubeadm \
+    helm \
+    consul-k
 
-COPY --from=builder /kanopy/target/release/kanopy /usr/bin/kanopy
-COPY os/override /
-COPY os/assets/ /var/lib/kanopy
+
