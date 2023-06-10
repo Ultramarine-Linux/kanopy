@@ -20,6 +20,8 @@ RUN rpm-ostree install --idempotent --allow-inactive \
     nano \
     cri-o \
     runc \
+    crun \
+    youki \
     kubernetes-client \
     kubernetes-kubeadm \
     helm
