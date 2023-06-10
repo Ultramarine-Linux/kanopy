@@ -5,7 +5,7 @@ edition = "2021"
 authors = [
     "Fyra Labs",
     "Pornpipat Popum <cappy@fyralabs.com>",
-    "Lleyton Gray <lea@fyralabs.com",
+    "Lleyton Gray <lea@fyralabs.com>",
 ]
 license = "GPL-3.0"
 description = "A CLI tool for managing Kanopy Clusters"
