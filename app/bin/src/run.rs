@@ -27,25 +27,13 @@ pub fn check_commands() -> Result<()> {
     Ok(())
 }
 
-/// Enable crio
-pub fn enable_crio() -> Result<()> {
+/// Enable services
+pub fn enable_services() -> Result<()> {
     let mut cmd = Command::new("systemctl");
-    cmd.arg("enable").arg("--now").arg("crio");
+    cmd.arg("enable").arg("--now").arg("crio").arg("kubelet");
     let output = cmd.output()?;
     if !output.status.success() {
-        println!("Failed to enable crio");
-        std::process::exit(1);
-    }
-    Ok(())
-}
-
-/// enable kubelet
-pub fn enable_kubelet() -> Result<()> {
-    let mut cmd = Command::new("systemctl");
-    cmd.arg("enable").arg("kubelet");
-    let output = cmd.output()?;
-    if !output.status.success() {
-        println!("Failed to enable kubelet");
+        println!("Failed to enable services");
         std::process::exit(1);
     }
     Ok(())
