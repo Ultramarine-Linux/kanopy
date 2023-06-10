@@ -12,10 +12,8 @@ FROM ghcr.io/ultramarine-linux/base-ostree:38 as runtime
 # copy files
 COPY os/override /
 COPY os/assets/ /var/lib/kanopy
-COPY --from=builder /kanopy/target/release/kanopy /usr/bin/kanopy
 
 # Install packages
-
 
 RUN rpm-ostree install --idempotent --allow-inactive \
     git \
@@ -26,3 +24,4 @@ RUN rpm-ostree install --idempotent --allow-inactive \
     kubernetes-kubeadm \
     helm
 
+COPY --from=builder /kanopy/target/release/kanopy /usr/bin/kanopy
