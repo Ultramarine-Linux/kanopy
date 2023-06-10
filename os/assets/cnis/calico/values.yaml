@@ -1,0 +1,7 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: calico
+  namespace: kube-system
+spec:
+  valuesContent: |-

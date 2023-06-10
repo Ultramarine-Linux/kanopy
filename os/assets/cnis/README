@@ -1,0 +1,2 @@
+The CNIs folder will each contain a Helm chart for the CNI, and a `values.yaml` file that contains the configuration for the CNI. You can also edit the configuration of the CNI by editing the top level cluster configuration file.
+

@@ -1,0 +1,60 @@
+# Example config file for future reference
+# Cluster node
+
+hostname: master-1
+
+cluster:
+    # only one master per cluster
+    # this would be set for the node you want to set up first, and then the rest of the nodes would join this one
+    master: true 
+    # control-plane or worker, adds a role label to the node if control-plane is true
+    # you can add additional roles later after the cluster is set up
+    role: control-plane
+    # Make this node a part of the k8s database cluster
+    # if kine is enabled, this is ignored and the node will use an external database
+    run-db: true
+    # Parameters for joining the cluster
+    # if master is false, required to join cluster, if not, you only need to set token
+    join:
+        endpoint: "https://master-1:6443" # or whatever the master's endpoint is
+        token: "hunter2" # token to join cluster
+        ca-cert-hash: "" # hash of the CA cert
+
+# SSH keys should be in ignition config
+
+
+# Networking setup
+networking:
+    internal-ip: null # null or "", if you want to automatically get the IP address
+    external-ip: null # null or "" if you want to set none
+    cni: calico # or flannel, cilium, canal
+    pod-cidr: 10.42.0.0/16
+    service-cidr: # idk
+    cni-values:
+        # whatever here to pass to the CNI, else defaults are used in values.yaml
+        foo: bar
+
+# Database setup
+database:
+    # etcd stuff
+    etcd-args: [] # extra args to pass to etcd
+    kine: # use kine instead of etcd
+        enabled: false
+        datastore: postgresql://user:password@host:port/dbname
+
+    # You can add extra etcd config as a configmap or secret, since someone would be backing up
+    # their snapshots off-cluster anyway
+
+storage:
+    local:
+        enabled: true
+        # Use shared paths for storage, in cases you want to run everything off NFS or something
+        shared: false
+        shared-path: /var/srv/kubernetes
+        # If shared is false, this is the path to the storage
+        path: /var/lib/kanopy/storage
+
+    nfs:
+        enabled: false
+
+    # ... or you can set up your own storage later on

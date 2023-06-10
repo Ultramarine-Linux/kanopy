@@ -1,0 +1,9 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: calico
+  namespace: kube-system
+spec:
+  chart: calico
+  repo: https://docs.projectcalico.org/charts
+  targetNamespace: kube-system

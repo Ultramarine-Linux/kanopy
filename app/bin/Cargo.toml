@@ -1,0 +1,19 @@
+[package]
+name = "kanopy"
+version = "0.1.0"
+edition = "2021"
+authors = [
+    "Fyra Labs",
+    "Pornpipat Popum <cappy@fyralabs.com>",
+    "Lleyton Gray <lea@fyralabs.com",
+]
+license = "GPL-3.0"
+description = "A CLI tool for managing Kanopy Clusters"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+clap = { version = "4.3.3", features = ["env", "derive"] }
+color-eyre = "0.6.2"
+serde = { version = "1.0.164", features = ["serde_derive"] }
+serde_yaml = "0.9.21"
