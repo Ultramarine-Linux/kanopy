@@ -4,12 +4,14 @@ FROM ghcr.io/ultramarine-linux/base-ostree:38
 
 # Install packages
 
+
 RUN rpm-ostree install --idempotent --allow-inactive \
     git \
     nano \
-    containerd \
+    cri-o \
     runc \
     kubernetes-client \
     kubernetes-kubeadm
 
+COPY ./override /
 COPY ./assets/ /var/lib/kanopy

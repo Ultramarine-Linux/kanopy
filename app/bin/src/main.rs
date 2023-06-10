@@ -1,6 +1,7 @@
 use clap::{Parser, Subcommand};
 use color_eyre::eyre::Result;
 mod config;
+mod run;
 
 #[derive(Parser)]
 #[command(version, about)]
