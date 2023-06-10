@@ -24,7 +24,5 @@ RUN rpm-ostree install --idempotent --allow-inactive \
     runc \
     kubernetes-client \
     kubernetes-kubeadm \
-    helm \
-    consul-k
-
+    helm
 
