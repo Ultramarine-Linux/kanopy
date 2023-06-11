@@ -1,11 +1,11 @@
 use clap::{Parser, Subcommand};
 use color_eyre::eyre::Result;
-use tracing::info;
 
 use crate::run::{check_commands, enable_services, init_cluster};
 mod config;
 mod helm;
 mod run;
+mod addon;
 
 #[derive(Parser)]
 #[command(version, about)]
@@ -47,12 +47,12 @@ fn main() -> Result<()> {
         SubCommand::Init => {
             check_commands()?;
             // enable_services()?;
-            // init_cluster()?;
+            init_cluster(cli)?;
         }
         SubCommand::FirstBoot => {
             // do something here that would be run on first boot
             check_commands()?;
-            // enable_services()?;
+            enable_services()?;
             init_cluster(cli)?;
         }
     }

@@ -44,19 +44,32 @@ database:
     # You can add extra etcd config as a configmap or secret, since someone would be backing up
     # their snapshots off-cluster anyway
 
-storage:
-    local:
-        enabled: true
-        # Use shared paths for storage, in cases you want to run everything off NFS or something
-        shared: false
-        shared-path: /var/srv/kubernetes
-        # If shared is false, this is the path to the storage
-        path: /var/lib/kanopy/storage
 
-    nfs:
+# Extra addons
+addons:
+    traefik:
         enabled: false
+        helm_values: {}
+    
+    nginx-ingress:
+        enabled: false
+        helm_values: {}
 
-# ... or you can set up your own storage later on
+    rancher:
+        enabled: false
+        helm_values: {}
+
+    # Rancher Local Path Provisioner
+    rancher-localpv:
+        enabled: false
+        helm_values: {}
+
+    longhorn:
+        enabled: false
+        helm_values: {}
+    
+
+    
 
 # Helm config
 helm:

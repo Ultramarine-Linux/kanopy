@@ -23,7 +23,7 @@ fn default_as_true() -> bool {
 }
 
 #[derive(Serialize, Deserialize, Debug, Default)]
-#[serde(rename_all = "kebab-case")]
+#[serde(rename_all = "kebab-case", default)]
 pub struct JoinParams {
     /// Join this node to database cluster
     /// Only works if role is ControlPlane and kine is not enabled
@@ -33,7 +33,7 @@ pub struct JoinParams {
 }
 
 #[derive(Serialize, Deserialize, Debug, Default)]
-#[serde(rename_all = "kebab-case")]
+#[serde(rename_all = "kebab-case", default)]
 pub struct ClusterConfig {
     /// Node is master (first node)
     pub master: bool,
@@ -48,7 +48,7 @@ pub struct ClusterConfig {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-#[serde(rename_all = "kebab-case")]
+#[serde(rename_all = "kebab-case", default)]
 pub struct NetworkingConfig {
     pub internal_ip: Option<String>,
     pub external_ip: Option<String>,
@@ -72,7 +72,7 @@ impl Default for NetworkingConfig {
 }
 
 #[derive(Serialize, Deserialize, Debug, Default)]
-#[serde(rename_all = "kebab-case")]
+#[serde(rename_all = "kebab-case", default)]
 pub struct KineConfig {
     pub enabled: bool,
     pub datastore: Option<String>,
@@ -82,26 +82,27 @@ pub struct KineConfig {
 }
 
 #[derive(Serialize, Deserialize, Debug, Default)]
+#[serde(rename_all = "kebab-case", default)]
 pub struct DatabaseConfig {
     pub kine: KineConfig,
     pub etcd_args: Vec<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Default)]
-#[serde(rename_all = "kebab-case")]
+#[serde(rename_all = "kebab-case", default)]
 pub struct HelmConfig {
     pub extra_args: Vec<String>,
     pub extra_charts: Vec<HelmChart>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Default)]
-#[serde(rename_all = "kebab-case")]
+#[serde(rename_all = "kebab-case", default)]
 pub struct KanopyConfig {
     pub hostname: String,
     pub cluster: ClusterConfig,
     pub networking: NetworkingConfig,
-    // pub database: DatabaseConfig,
-    // pub helm: HelmConfig,
+    pub database: DatabaseConfig,
+    pub helm: HelmConfig,
 }
 
 impl KanopyConfig {
