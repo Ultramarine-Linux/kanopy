@@ -16,6 +16,7 @@ const REQUIRED_COMMANDS: &[&str] = &[
 
 pub fn check_commands() -> Result<()> {
     for command in REQUIRED_COMMANDS {
+        print!("Checking for {}... ", command);
         let mut cmd = Command::new("which");
         cmd.arg(command);
         let output = cmd.output()?;

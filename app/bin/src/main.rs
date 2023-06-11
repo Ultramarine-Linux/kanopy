@@ -1,5 +1,6 @@
 use clap::{Parser, Subcommand};
 use color_eyre::eyre::Result;
+use tracing::info;
 
 use crate::run::{check_commands, enable_services, init_cluster};
 mod config;
@@ -38,16 +39,22 @@ enum SubCommand {
 
 fn main() -> Result<()> {
     color_eyre::install()?;
-    println!("Hello, world!");
+    // install tracing_subscriber logging
+    tracing_subscriber::fmt::init();
     let cli = KanopyCli::parse();
 
     match cli.subcmd {
         SubCommand::Init => {
             check_commands()?;
+            // enable_services()?;
+            // init_cluster()?;
+        }
+        SubCommand::FirstBoot => {
+            // do something here that would be run on first boot
+            check_commands()?;
             enable_services()?;
             init_cluster()?;
         }
-        SubCommand::FirstBoot => {}
     }
 
     Ok(())
