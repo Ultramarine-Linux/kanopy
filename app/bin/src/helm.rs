@@ -6,7 +6,7 @@ use color_eyre::Result;
 use serde::{Deserialize, Serialize};
 use serde_yaml::Value;
 use tempfile::TempPath;
-use tracing::info;
+use tracing::{info, debug};
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct HelmChart {
     pub name: String,
@@ -44,7 +44,7 @@ impl HelmChart {
     /// Generate values file for helm install
     /// returns temporary file path to values file
     pub fn generate_values(&self) -> Result<Option<PathBuf>> {
-        println!("Generating values file for chart: {:?}", self.values);
+        debug!("Values for chart: {:?}", self.values);
         if self.values.is_none() {
             return Ok(None);
         } else {

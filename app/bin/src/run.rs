@@ -9,6 +9,7 @@ use templar::{Context, StandardContext, Templar};
 use tracing::info;
 
 use crate::{
+    addon::{Addon, AddonLoader},
     config::KanopyConfig,
     helm::{chart_from_folder, HelmInstaller},
     KanopyCli,
@@ -86,7 +87,7 @@ pub fn render_kubeadm_init(config: &KanopyConfig) -> Result<String> {
         ],
         "nodeRegistration": {
             "name": config.hostname,
-            "criSocket": "/var/run/crio/crio.sock",
+            "criSocket": "unix:///var/run/crio/crio.sock",
             "taints": [],
             "kubeletExtraArgs": {
                 "cgroup-driver": "systemd",
@@ -114,7 +115,7 @@ pub fn render_join_template(config: &KanopyConfig) -> Result<String> {
             }
         },
         "nodeRegistration": {
-            "criSocket": "/var/run/crio/crio.sock",
+            "criSocket": "unix:///var/run/crio/crio.sock",
             "name": config.hostname,
             "taints": [],
         }
@@ -124,13 +125,13 @@ pub fn render_join_template(config: &KanopyConfig) -> Result<String> {
 }
 pub fn install_cni(params: KanopyCli, config: KanopyConfig) -> Result<()> {
     // get kubeconfig from /etc/kubernetes/admin.conf
-    info!("Installing CNI `{}`...", config.networking.cni);
+    info!("Installing CNI Addon `{}`...", config.networking.cni);
     let kubeconfig = "/etc/kubernetes/admin.conf";
     let chart_path = format!("{}/cnis/{}", params.assets, config.networking.cni);
-    let chart = chart_from_folder(&chart_path, config.networking.cni_values)?;
-    let installer = HelmInstaller::new(kubeconfig.to_owned(), Vec::new(), chart);
-    installer.install()?;
-    Ok(())
+    // TODO: Streamline this process
+    let loader = AddonLoader::new(kubeconfig.to_string());
+    let addon = Addon::load_from_dir(&chart_path)?;
+    loader.load(&addon, config.networking.cni_values)
 }
 
 pub fn init_cluster(params: KanopyCli) -> Result<()> {
@@ -143,7 +144,7 @@ pub fn init_cluster(params: KanopyCli) -> Result<()> {
         crate::config::NodeRole::Master => {
             info!("Initializing Master");
             let rendered = render_kubeadm_init(&config)?;
-            println!("{}", rendered);
+            // println!("{}", rendered);
             // write file to /etc/kanopy/kubeadm.yaml
             let mut file = std::fs::File::create("/etc/kanopy/kubeadm.yaml")?;
             file.write_all(rendered.as_bytes())?;
@@ -154,13 +155,12 @@ pub fn init_cluster(params: KanopyCli) -> Result<()> {
                 .arg("-v=5")
                 .spawn()?
                 .wait()?;
-            info!("Installing CNI");
             install_cni(params, config)?;
         }
         crate::config::NodeRole::Worker => {
             info!("Initializing Worker");
             let rendered = render_join_template(&config)?;
-            println!("{}", rendered);
+            // println!("{}", rendered);
             let mut file = std::fs::File::create("/etc/kanopy/kubeadm.yaml")?;
             file.write_all(rendered.as_bytes())?;
             Command::new("kubeadm")

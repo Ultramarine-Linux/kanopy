@@ -64,7 +64,7 @@ impl Default for NetworkingConfig {
             internal_ip: None,
             external_ip: None,
             cni: "flannel".to_string(),
-            pod_cidr: Some("10.244.0.0/16".to_string()),
+            pod_cidr: Some("10.42.0.0/16".to_string()),
             service_cidr: None,
             cni_values: None,
         }
