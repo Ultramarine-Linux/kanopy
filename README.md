@@ -21,12 +21,26 @@ Kanopy uses the vanilla Kubernetes distribution, and has options to install vari
 ...and more!
 
 ## todo
-- [] Implement config schema
-- [] Apply configs to cluster
-- [] Finish writing helper
-- [] Add YAML include macros
-
+- [x] Implement config schema
+- [x] Apply configs to cluster (WIP)
+- [x] Finish writing helper (WIP)
+- [ ] Add YAML include macros
+- [ ] Build web UI for cluster management
+- [ ] Add support for more addons
+- [ ] Helm chart manager in web UI
 
 ## Getting Started
 
-TO BE WRITTEN
+At the moment, Kanopy is still in development and does not yet have a bootable image release, only the OSTree build is available through GHCR.
+
+To build a CoreOS image out of the Docker image, install [coreos-assembler](https://coreos.github.io/coreos-assembler/)
+
+> NOTE: Currently, building CoreOS images are not yet supported, see https://github.com/coreos/fedora-coreos-tracker/issues/1151. In the meanwhile, you can rebase from an existing CoreOS installation. And we will work on a COSA project to build Kanopy images.
+
+```bash
+rpm-ostree rebase --reboot ostree-unverified-registry:ghcr.io/ultramarine/kanopy:38
+```
+
+Make sure to install the configuration file to `/etc/kanopy/config.yaml` before rebasing.
+
+You can also write an Ignition config to write the config first, then rebase to Kanopy, and then reboot.
