@@ -26,7 +26,7 @@ cluster:
 networking:
     internal-ip: null # null or "", if you want to automatically get the IP address
     external-ip: null # null or "" if you want to set none
-    cni: calico # flannel, cilium, canal, calico
+    cni: flannel # flannel, cilium, canal, calico
     pod-cidr: 10.244.0.0/16
     service-cidr: # idk
     cni-values:

@@ -126,7 +126,7 @@ pub fn install_cni(params: KanopyCli, config: KanopyConfig) -> Result<()> {
     // get kubeconfig from /etc/kubernetes/admin.conf
     info!("Installing CNI `{}`...", config.networking.cni);
     let kubeconfig = "/etc/kubernetes/admin.conf";
-    let chart_path = format!("{}/cni/{}", params.assets, config.networking.cni);
+    let chart_path = format!("{}/cnis/{}", params.assets, config.networking.cni);
     let chart = chart_from_folder(&chart_path, config.networking.cni_values)?;
     let installer = HelmInstaller::new(kubeconfig.to_owned(), Vec::new(), chart);
     installer.install()?;
@@ -154,8 +154,8 @@ pub fn init_cluster(params: KanopyCli) -> Result<()> {
                 .arg("-v=5")
                 .spawn()?
                 .wait()?;
-            // info!("Installing CNI");
-            // install_cni(params, config)?;
+            info!("Installing CNI");
+            install_cni(params, config)?;
         }
         crate::config::NodeRole::Worker => {
             info!("Initializing Worker");
