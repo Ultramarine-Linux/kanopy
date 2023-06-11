@@ -9,7 +9,7 @@ mod run;
 
 #[derive(Parser)]
 #[command(version, about)]
-struct KanopyCli {
+pub struct KanopyCli {
     #[clap(subcommand)]
     subcmd: SubCommand,
 
@@ -52,8 +52,8 @@ fn main() -> Result<()> {
         SubCommand::FirstBoot => {
             // do something here that would be run on first boot
             check_commands()?;
-            enable_services()?;
-            init_cluster()?;
+            // enable_services()?;
+            init_cluster(cli)?;
         }
     }
 

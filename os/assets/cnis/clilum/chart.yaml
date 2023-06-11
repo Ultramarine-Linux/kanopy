@@ -1,0 +1,5 @@
+name: cilium
+namespace: kube-system
+chart: cilium
+repo: https://helm.cilium.io/
+version: 1.13.3

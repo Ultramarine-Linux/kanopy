@@ -1,0 +1,4 @@
+name: calico
+namespace: kube-system
+chart: calico
+repo: https://docs.projectcalico.org/charts

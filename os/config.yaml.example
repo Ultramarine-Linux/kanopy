@@ -9,7 +9,7 @@ cluster:
     master: true
     # control-plane or worker, adds a role label to the node if control-plane is true
     # you can add additional roles later after the cluster is set up
-    role: control-plane
+    role: master
     # Make this node a part of the k8s database cluster
     # if kine is enabled, this is ignored and the node will use an external database
     run-db: true
@@ -27,7 +27,7 @@ networking:
     internal-ip: null # null or "", if you want to automatically get the IP address
     external-ip: null # null or "" if you want to set none
     cni: calico # flannel, cilium, canal, calico
-    pod-cidr: 10.42.0.0/16
+    pod-cidr: 10.244.0.0/16
     service-cidr: # idk
     cni-values:
         # whatever here to pass to the CNI, else defaults are used in values.yaml

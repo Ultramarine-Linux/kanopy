@@ -3,9 +3,10 @@
 use std::{fs::File, io::Write, process::Command};
 
 use color_eyre::Result;
+use serde::{Deserialize, Serialize};
 use serde_yaml::Value;
 use tempfile::TempPath;
-
+#[derive(Serialize, Deserialize, Debug, Default)]
 pub struct HelmChart {
     pub name: String,
     pub version: Option<String>,
@@ -32,6 +33,11 @@ impl HelmChart {
             values,
             values_file,
         }
+    }
+    pub fn read_from_file(path: &str) -> Result<Self> {
+        let file = File::open(path)?;
+        let chart: HelmChart = serde_yaml::from_reader(file)?;
+        Ok(chart)
     }
     /// Generate values file for helm install
     /// returns temporary file path to values file
@@ -71,11 +77,20 @@ impl HelmChart {
         Ok(args)
     }
 }
-
+#[derive(Serialize, Deserialize, Debug, Default)]
 pub struct HelmInstaller {
     pub kubeconfig: String,
     pub extra_args: Vec<String>,
     pub chart: HelmChart,
+}
+
+/// Reads a helm chart from a folder in kanopy format
+pub fn chart_from_folder(path: &str, values: Option<Value>) -> Result<HelmChart> {
+    let mut chart = HelmChart::read_from_file(&format!("{}/chart.yaml", path))?;
+    let values_file = format!("{}/values.yaml", path);
+    chart.values_file = values_file;
+    chart.values = values;
+    Ok(chart)
 }
 
 // generate args for helm install command

@@ -1,0 +1,4 @@
+name: flannel
+namespace: kube-system
+chart: flannel
+repo: https://flannel-io.github.io/flannel
