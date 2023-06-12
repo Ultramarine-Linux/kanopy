@@ -91,7 +91,8 @@ pub fn render_kubeadm_init(config: &KanopyConfig) -> Result<String> {
             "taints": [],
             "kubeletExtraArgs": {
                 "cgroup-driver": "systemd",
-                "feature-gates": "NodeSwap=true"
+                "feature-gates": "NodeSwap=true",
+                "resolv-conf": "/run/systemd/resolve/resolv.conf"
             }
         }
     });
