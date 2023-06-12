@@ -4,6 +4,27 @@ use serde_yaml::Value;
 
 use crate::helm::HelmChart;
 
+/// Randomly generate a new token
+/// A token format is "[a-z0-9]{6}.[a-z0-9]{16}"
+pub fn random_token() -> String {
+    // pubkey: 6 chars
+    // privkey: 16 chars
+    use rand::distributions::Alphanumeric;
+    use rand::{thread_rng, Rng};
+    let mut rng = thread_rng();
+    let pubkey: String = std::iter::repeat(())
+        .map(|()| rng.sample(Alphanumeric))
+        .map(char::from)
+        .take(6)
+        .collect();
+    let privkey: String = std::iter::repeat(())
+        .map(|()| rng.sample(Alphanumeric))
+        .map(char::from)
+        .take(16)
+        .collect();
+    format!("{}.{}", pubkey, privkey).to_lowercase()
+}
+
 // default is Worker
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "kebab-case")]
@@ -28,7 +49,12 @@ pub struct JoinParams {
     /// Join this node to database cluster
     /// Only works if role is ControlPlane and kine is not enabled
     pub endpoint: Option<String>,
-    pub token: Option<String>,
+    /// Cluster joining token
+    /// If not provided, a random token will be generated
+    /// A token format is "[a-z0-9]{6}.[a-z0-9]{16}"
+    /// Should always be provided if joining to an existing cluster
+    #[serde(default = "random_token")]
+    pub token: String,
     pub ca_cert: Option<String>,
 }
 

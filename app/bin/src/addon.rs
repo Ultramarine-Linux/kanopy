@@ -4,11 +4,10 @@ use std::process::Command;
 
 use color_eyre::Result;
 use serde::{Deserialize, Serialize};
-use serde_json::value;
 use serde_yaml::Value;
 use tracing::info;
 
-use crate::helm::{HelmInstaller, HelmChart, chart_from_folder};
+use crate::helm::{HelmInstaller, chart_from_folder};
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct Addon {

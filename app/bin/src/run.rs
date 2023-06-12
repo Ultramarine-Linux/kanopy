@@ -1,17 +1,11 @@
 use color_eyre::eyre::Result;
 use serde_json::json;
-use std::{
-    fs::create_dir_all,
-    io::Write,
-    process::{Command, Stdio},
-};
-use templar::{Context, StandardContext, Templar};
+use std::{fs::create_dir_all, io::Write, process::Command};
 use tracing::info;
 
 use crate::{
     addon::{Addon, AddonLoader},
     config::KanopyConfig,
-    helm::{chart_from_folder, HelmInstaller},
     KanopyCli,
 };
 

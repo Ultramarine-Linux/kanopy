@@ -5,7 +5,6 @@ use std::{fs::File, io::Write, process::Command, path::PathBuf};
 use color_eyre::Result;
 use serde::{Deserialize, Serialize};
 use serde_yaml::Value;
-use tempfile::TempPath;
 use tracing::{info, debug};
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct HelmChart {
@@ -18,7 +17,7 @@ pub struct HelmChart {
 }
 
 impl HelmChart {
-    pub fn new(
+    pub fn _new(
         name: String,
         version: Option<String>,
         repo: String,
@@ -110,7 +109,7 @@ impl HelmInstaller {
     }
 
     pub fn install(&self) -> Result<()> {
-        let mut cmd = Command::new("helm")
+        let cmd = Command::new("helm")
             .arg("install")
             .arg("--kubeconfig")
             .arg(&self.kubeconfig)
