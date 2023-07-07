@@ -11,7 +11,7 @@ FROM ghcr.io/ultramarine-linux/base-ostree:38 as runtime
 
 # copy files
 COPY os/override /
-COPY os/assets/ /var/lib/kanopy
+COPY os/assets/ /etc/kanopy/assets
 
 # Install packages
 # if not x86_64, remove akmods-secureboot
@@ -31,3 +31,5 @@ RUN rpm-ostree install --idempotent --allow-inactive \
     helm
 
 COPY --from=builder /kanopy/target/release/kanopy /usr/bin/kanopy
+
+RUN ostree container commit

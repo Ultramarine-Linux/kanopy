@@ -1,0 +1,48 @@
+variant: fcos
+version: 1.5.0
+
+# User configuration
+passwd:
+  users:
+    - name: core
+      ssh_authorized_keys:
+        - REPLACE_WITH_YOUR_SSH_PUBLIC_KEY
+
+
+# Rebase configuration
+
+storage:
+  directories:
+    - path: /etc/kanopy-autorebase
+      mode: 0754
+  files:
+    - path: /etc/kanopy-autorebase/kanopy-autorebase.sh
+      contents:
+        inline: |
+          #!/usr/bin/bash
+          echo "Rebasing to Kanopy in 5 seconds"
+          sleep 5
+          rpm-ostree rebase ostree-unverified-registry:docker pull ghcr.io/ultramarine-linux/kanopy \
+            && touch /etc/kanopy-autorebase/.complete \
+            && systemctl disable kanopy-autorebase.service \
+            && systemctl reboot
+      mode: 0754
+
+systemd:
+  units:
+    - name: kanopy-autorebase.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Kanopy autorebase to OCI and reboot
+        ConditionPathExists=!/etc/kanopy-autorebase/.complete
+        ConditionFileIsExecutable=/etc/kanopy-autorebase/ucore-autorebase.sh
+        After=network-online.target
+        Wants=network-online.target
+        [Service]
+        Type=oneshot
+        StandardOutput=journal+console
+        RemainAfterExit=yes
+        ExecStart=/etc/kanopy-autorebase/kanopy-autorebase.sh
+        [Install]
+        WantedBy=multi-user.target

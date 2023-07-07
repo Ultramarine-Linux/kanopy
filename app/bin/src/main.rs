@@ -23,7 +23,7 @@ pub struct KanopyCli {
     config: String,
 
     /// Specify assets directory
-    #[clap(short, long, env = "KANOPY_ASSETS", default_value = "/var/lib/kanopy")]
+    #[clap(short, long, env = "KANOPY_ASSETS", default_value = "/etc/kanopy/assets")]
     assets: String,
 }
 
